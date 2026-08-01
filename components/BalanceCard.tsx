@@ -15,7 +15,6 @@ export default function DashboardPage() {
   } = useApp();
 
 
-
   const totalIncome = income.reduce(
     (sum:any,item:any)=>
       sum + Number(item.amount || 0),
@@ -38,12 +37,11 @@ export default function DashboardPage() {
 
     return expenses
     .filter(
-      (item:any)=>
-        item.category === category
+      (item:any)=>item.category === category
     )
     .reduce(
       (sum:number,item:any)=>
-        sum + Number(item.amount || 0),
+      sum + Number(item.amount || 0),
       0
     );
 
@@ -51,322 +49,320 @@ export default function DashboardPage() {
 
 
 
-  return (
+return (
 
-    <main className="
-    min-h-screen
-    bg-slate-950
-    p-8
-    text-white
-    ">
+<main className="
+min-h-screen
+bg-slate-950
+p-8
+text-white
+">
 
 
-      <h1 className="
-      text-4xl
-      font-bold
-      ">
+<h1 className="
+text-4xl
+font-bold
+">
 
-        Good Morning
-        {
-          profile?.name
-          ?
-          `, ${profile.name}`
-          :
-          ""
-        }
-        👋
+Good Morning
+{
+profile?.name
+?
+`, ${profile.name}`
+:
+""
+}
+👋
 
-      </h1>
+</h1>
 
 
+<p className="
+mt-2
+text-slate-400
+">
+Your personal finance overview
+</p>
 
-      <p className="
-      mt-2
-      text-slate-400
-      ">
-        Your personal finance overview
-      </p>
 
 
 
 
+<div className="
+mt-8
+grid
+gap-5
+md:grid-cols-4
+">
 
-      <div className="
-      mt-8
-      grid
-      gap-5
-      md:grid-cols-4
-      ">
 
+<Card
+title="Total Balance"
+value={`${currency}${balance.toLocaleString()}`}
+color={
+balance >= 0
+?
+"text-blue-400"
+:
+"text-red-400"
+}
+icon="💰"
+/>
 
-        <Card
-        title="Balance"
-        value={`${currency}${balance}`}
-        color="text-blue-400"
-        />
 
 
-        <Card
-        title="Income"
-        value={`${currency}${totalIncome}`}
-        color="text-green-400"
-        />
+<Card
+title="Income"
+value={`${currency}${totalIncome.toLocaleString()}`}
+color="text-green-400"
+icon="📈"
+/>
 
 
-        <Card
-        title="Expenses"
-        value={`${currency}${totalExpense}`}
-        color="text-red-400"
-        />
 
+<Card
+title="Expenses"
+value={`${currency}${totalExpense.toLocaleString()}`}
+color="text-red-400"
+icon="💸"
+/>
 
-        <Card
-        title="Savings"
-        value={`${currency}${balance}`}
-        color="text-cyan-400"
-        />
 
-      </div>
 
+<Card
+title="Savings"
+value={`${currency}${Math.max(balance,0).toLocaleString()}`}
+color="text-cyan-400"
+icon="🏦"
+/>
 
 
+</div>
 
 
 
 
-      <section className="
-      mt-8
-      rounded-2xl
-      border
-      border-slate-700
-      bg-slate-900
-      p-6
-      ">
 
 
-        <h2 className="
-        text-2xl
-        font-bold
-        ">
-          Budget Tracker
-        </h2>
+<section className="
+mt-8
+rounded-2xl
+border
+border-slate-700
+bg-slate-900
+p-6
+">
 
 
+<h2 className="
+text-2xl
+font-bold
+">
+Budget Tracker
+</h2>
 
-        <div className="
-        mt-5
-        space-y-6
-        ">
 
+<div className="
+mt-5
+space-y-6
+">
 
-        {
-          budgets.map(
-            (budget:any,index:number)=>{
 
+{
+budgets.map(
+(budget:any,index:number)=>{
 
-              const spent =
-              getCategorySpent(
-                budget.category
-              );
 
+const spent =
+getCategorySpent(
+budget.category
+);
 
-              const percentage =
-              budget.amount
-              ?
-              Math.min(
-                (spent / budget.amount) * 100,
-                100
-              )
-              :
-              0;
 
 
+const percentage =
+budget.amount
+?
+Math.min(
+(spent / budget.amount) * 100,
+100
+)
+:
+0;
 
-              return (
 
-                <div
-                key={
-                  budget.id ||
-                  index
-                }
-                >
 
+return (
 
-                  <div className="
-                  flex
-                  justify-between
-                  ">
+<div
+key={budget.id || index}
+>
 
-                    <span className="font-semibold">
-                      {budget.category}
-                    </span>
 
+<div className="
+flex
+justify-between
+">
 
-                    <span>
-                      {currency}{spent}
-                      /
-                      {currency}{budget.amount}
-                    </span>
+<span className="font-semibold">
+{budget.category}
+</span>
 
 
-                  </div>
+<span>
+{currency}{spent}
+/
+{currency}{budget.amount}
+</span>
 
 
+</div>
 
 
-                  <div className="
-                  mt-2
-                  h-3
-                  rounded-full
-                  bg-slate-700
-                  ">
 
-                    <div
+<div className="
+mt-2
+h-3
+rounded-full
+bg-slate-700
+">
 
-                    className="
-                    h-3
-                    rounded-full
-                    bg-blue-500
-                    "
 
-                    style={{
-                      width:`${percentage}%`
-                    }}
+<div
 
-                    />
+className="
+h-3
+rounded-full
+bg-blue-500
+"
 
-                  </div>
+style={{
+width:`${percentage}%`
+}}
 
+/>
 
 
-                </div>
+</div>
 
-              );
 
 
-            })
-        }
+</div>
 
+);
 
-        {
-          budgets.length===0 &&
 
-          <p className="
-          text-slate-400
-          ">
-            No budgets created yet
-          </p>
+})
 
-        }
+}
 
 
-        </div>
+{
+budgets.length===0 &&
 
+<p className="text-slate-400">
+No budgets created yet
+</p>
 
-      </section>
+}
 
 
+</div>
 
 
+</section>
 
 
 
-      <section className="
-      mt-8
-      rounded-2xl
-      border
-      border-slate-700
-      bg-slate-900
-      p-6
-      ">
 
 
-        <h2 className="
-        text-2xl
-        font-bold
-        ">
-          Recent Expenses
-        </h2>
 
+<section className="
+mt-8
+rounded-2xl
+border
+border-slate-700
+bg-slate-900
+p-6
+">
 
 
-        <div className="
-        mt-4
-        space-y-3
-        ">
+<h2 className="
+text-2xl
+font-bold
+">
+Recent Expenses
+</h2>
 
 
-        {
-          expenses
-          .slice(-5)
-          .reverse()
-          .map(
-            (item:any,index:number)=>(
 
+<div className="
+mt-4
+space-y-3
+">
 
-            <div
 
-            key={
-              item.id ||
-              index
-            }
+{
+expenses
+.slice(-5)
+.reverse()
+.map(
+(item:any,index:number)=>(
 
-            className="
-            flex
-            justify-between
-            rounded-lg
-            bg-slate-800
-            p-3
-            "
 
-            >
+<div
 
+key={item.id || index}
 
-              <span>
-                {item.title}
-              </span>
+className="
+flex
+justify-between
+rounded-lg
+bg-slate-800
+p-3
+"
 
+>
 
-              <span className="
-              text-red-400
-              ">
-                -{currency}{item.amount}
-              </span>
 
+<span>
+{item.title}
+</span>
 
-            </div>
 
+<span className="
+text-red-400
+">
 
-          ))
+-{currency}{item.amount}
 
-        }
+</span>
 
 
-        </div>
+</div>
 
 
-      </section>
+))
 
 
+}
 
 
+</div>
 
 
+</section>
 
-      <FinanceCharts
 
-      expenses={expenses}
 
-      income={income}
 
-      currency={currency}
 
-      />
+<FinanceCharts />
 
 
-    </main>
+</main>
 
-  );
+);
 
 }
 
@@ -375,10 +371,14 @@ export default function DashboardPage() {
 
 
 
+
 function Card({
+
 title,
 value,
-color
+color,
+icon
+
 }:any){
 
 
@@ -393,11 +393,29 @@ p-6
 ">
 
 
+<div className="
+flex
+justify-between
+items-center
+">
+
+
 <p className="
 text-slate-400
 ">
 {title}
 </p>
+
+
+<span className="
+text-2xl
+">
+{icon}
+</span>
+
+
+</div>
+
 
 
 <h2 className={`
