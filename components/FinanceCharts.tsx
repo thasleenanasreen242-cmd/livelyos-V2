@@ -1,16 +1,10 @@
 "use client";
 
-import {
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  Tooltip,
-  ResponsiveContainer,
-  PieChart,
-  Pie,
-  Cell
-} from "recharts";
+type FinanceChartsProps = {
+  expenses: any[];
+  income: any[];
+  currency: string;
+};
 
 
 export default function FinanceCharts({
@@ -19,177 +13,130 @@ export default function FinanceCharts({
   income = [],
   currency = "₹"
 
-}:any){
+}: FinanceChartsProps) {
 
 
+  const totalIncome = income.reduce(
+    (sum:number,item:any)=>
+      sum + Number(item.amount || 0),
+    0
+  );
 
-const expenseData = expenses.map(
-(item:any)=>({
 
-name:item.category || item.title,
+  const totalExpense = expenses.reduce(
+    (sum:number,item:any)=>
+      sum + Number(item.amount || 0),
+    0
+  );
 
-amount:Number(item.amount || 0)
 
-})
-);
 
+  return (
 
+    <section className="
+    mt-8
+    grid
+    gap-6
+    md:grid-cols-2
+    ">
 
-const incomeData = [
 
-{
+      <div className="
+      rounded-2xl
+      border
+      border-slate-700
+      bg-slate-900
+      p-6
+      ">
 
-name:"Income",
 
-amount: income.reduce(
-(sum:number,item:any)=>
-sum + Number(item.amount || 0),
-0
-)
+        <h2 className="
+        text-xl
+        font-bold
+        ">
+          Finance Summary
+        </h2>
 
-}
 
-];
 
+        <div className="
+        mt-5
+        space-y-3
+        text-slate-300
+        ">
 
 
+          <p>
+            Total Income:
+            <span className="text-green-400 ml-2">
+              {currency}{totalIncome}
+            </span>
+          </p>
 
 
-return (
 
-<div className="
-mt-8
-grid
-gap-6
-md:grid-cols-2
-">
+          <p>
+            Total Expenses:
+            <span className="text-red-400 ml-2">
+              {currency}{totalExpense}
+            </span>
+          </p>
 
 
 
-<div className="
-rounded-2xl
-border
-border-slate-700
-bg-slate-900
-p-6
-">
+          <p>
+            Transactions:
+            <span className="text-blue-400 ml-2">
+              {expenses.length}
+            </span>
+          </p>
 
 
-<h2 className="
-text-xl
-font-bold
-mb-5
-">
+        </div>
 
-Expense Chart
 
-</h2>
+      </div>
 
 
 
-<ResponsiveContainer
-width="100%"
-height={300}
->
 
-<BarChart data={expenseData}>
 
-<XAxis dataKey="name"/>
+      <div className="
+      rounded-2xl
+      border
+      border-slate-700
+      bg-slate-900
+      p-6
+      ">
 
-<YAxis/>
 
-<Tooltip/>
+        <h2 className="
+        text-xl
+        font-bold
+        ">
+          Money Health
+        </h2>
 
-<Bar
-dataKey="amount"
-fill="#3b82f6"
-/>
 
 
-</BarChart>
+        <p className="
+        mt-5
+        text-slate-400
+        ">
 
+        Keep tracking your income,
+        expenses and savings goals.
 
-</ResponsiveContainer>
+        </p>
 
 
 
-</div>
+      </div>
 
 
 
+    </section>
 
-
-
-<div className="
-rounded-2xl
-border
-border-slate-700
-bg-slate-900
-p-6
-">
-
-
-<h2 className="
-text-xl
-font-bold
-mb-5
-">
-
-Income Overview
-
-</h2>
-
-
-
-<ResponsiveContainer
-width="100%"
-height={300}
->
-
-
-<PieChart>
-
-
-<Pie
-
-data={incomeData}
-
-dataKey="amount"
-
-nameKey="name"
-
-outerRadius={100}
-
->
-
-<Cell fill="#22c55e"/>
-
-</Pie>
-
-
-<Tooltip
-formatter={(value:any)=>
-`${currency}${value}`
-}
-/>
-
-
-</PieChart>
-
-
-
-</ResponsiveContainer>
-
-
-
-</div>
-
-
-
-</div>
-
-
-);
-
+  );
 
 }
