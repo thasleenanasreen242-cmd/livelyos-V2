@@ -367,15 +367,7 @@ p-3
 
 
 
-<FinanceCharts
-
-expenses={expenses}
-
-income={income}
-
-currency={currency}
-
-/>
+<FinanceCharts />
 
 
 </main>
