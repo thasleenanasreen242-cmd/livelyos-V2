@@ -3,7 +3,6 @@
 import { useApp } from "../context/AppContext";
 import FinanceCharts from "@/components/FinanceCharts";
 
-
 export default function DashboardPage() {
 
   const {
